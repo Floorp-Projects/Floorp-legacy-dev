@@ -16,6 +16,7 @@
 #include "gfx2DGlue.h"
 #include "gfxUtils.h"
 #include "mozilla/EndianUtils.h"
+#include "mozilla/Maybe.h"
 #include "mozilla/SharedThreadPool.h"
 #include "MediaDataDemuxer.h"
 #include "nsAutoRef.h"
@@ -151,7 +152,9 @@ int WebMDemuxer::NestEggContext::Init() {
 WebMDemuxer::WebMDemuxer(MediaResource* aResource)
     : WebMDemuxer(aResource, false) {}
 
-WebMDemuxer::WebMDemuxer(MediaResource* aResource, bool aIsMediaSource)
+WebMDemuxer::WebMDemuxer(
+    MediaResource* aResource, bool aIsMediaSource,
+    Maybe<media::TimeUnit> aFrameEndTimeBeforeRecreateDemuxer)
     : mVideoContext(this, aResource),
       mAudioContext(this, aResource),
       mBufferedState(nullptr),
@@ -170,6 +173,14 @@ WebMDemuxer::WebMDemuxer(MediaResource* aResource, bool aIsMediaSource)
   // Audio/video contexts hold a MediaResourceIndex.
   DDLINKCHILD("video context", mVideoContext.GetResource());
   DDLINKCHILD("audio context", mAudioContext.GetResource());
+
+  MOZ_ASSERT_IF(!aIsMediaSource,
+                aFrameEndTimeBeforeRecreateDemuxer.isNothing());
+  if (aIsMediaSource && aFrameEndTimeBeforeRecreateDemuxer) {
+    mVideoFrameEndTimeBeforeReset = aFrameEndTimeBeforeRecreateDemuxer;
+    WEBM_DEBUG("Set mVideoFrameEndTimeBeforeReset=%" PRId64,
+               mVideoFrameEndTimeBeforeReset->ToMicroseconds());
+  }
 }
 
 WebMDemuxer::~WebMDemuxer() {
@@ -586,6 +597,12 @@ nsresult WebMDemuxer::GetNextPacket(TrackInfo::TrackType aType,
   }
   int64_t tstamp = holder->Timestamp();
   int64_t duration = holder->Duration();
+  int64_t defaultDuration = holder->DefaultDuration();
+  if (aType == TrackInfo::TrackType::kVideoTrack) {
+    WEBM_DEBUG("GetNextPacket(video): tstamp=%" PRId64 ", duration=%" PRId64
+               ", defaultDuration=%" PRId64,
+               tstamp, duration, defaultDuration);
+  }
 
   // The end time of this frame is the start time of the next frame. Fetch
   // the timestamp of the next packet for this track.  If we've reached the
@@ -607,6 +624,12 @@ nsresult WebMDemuxer::GetNextPacket(TrackInfo::TrackType aType,
       next_tstamp = tstamp + duration;
     } else if (lastFrameTime.isSome()) {
       next_tstamp = tstamp + (tstamp - lastFrameTime.ref());
+    } else if (defaultDuration >= 0) {
+      next_tstamp = tstamp + defaultDuration;
+    } else if (mVideoFrameEndTimeBeforeReset) {
+      WEBM_DEBUG("Setting next timestamp to be %" PRId64 " us",
+                 mVideoFrameEndTimeBeforeReset->ToMicroseconds());
+      next_tstamp = mVideoFrameEndTimeBeforeReset->ToMicroseconds();
     } else if (mIsMediaSource) {
       (this->*pushPacket)(holder);
     } else {
@@ -916,7 +939,7 @@ nsresult WebMDemuxer::DemuxPacket(TrackInfo::TrackType aType,
 
   int64_t offset = Resource(aType).Tell();
   RefPtr<NesteggPacketHolder> holder = new NesteggPacketHolder();
-  if (!holder->Init(packet, offset, track, false)) {
+  if (!holder->Init(packet, Context(aType), offset, track, false)) {
     return NS_ERROR_DOM_MEDIA_DEMUXER_ERR;
   }
 

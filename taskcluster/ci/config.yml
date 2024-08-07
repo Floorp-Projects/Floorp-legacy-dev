@@ -728,11 +728,11 @@ mac-notarization:
 expiration-policy:
     by-project:
         try:
-            default: 1 month
+            default: 28 days
             shortest: 7 days
             short: 14 days
-            medium: 1 month
-            long: 1 month
+            medium: 28 days
+            long: 28 days
         autoland:
             default: 1 year
             shortest: 14 days

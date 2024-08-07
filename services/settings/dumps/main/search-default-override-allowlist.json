@@ -3,52 +3,15 @@
     {
       "urls": [
         {
-          "search_url": "https://www.qwant.com?q={searchTerms}&client=opensearch"
+          "search_url": "https://www.qwant.com/?q={searchTerms}&client=p1-firefox-sb"
         }
       ],
-      "schema": 1710167605850,
-      "engineName": "Qwant",
+      "schema": 1721037040785,
       "overridesId": "qwant@search.mozilla.org",
-      "thirdPartyId": "opensearch@search.mozilla.org",
-      "id": "fc297e76-6e20-48ba-8474-919e3e4380bf",
-      "last_modified": 1710168995103
-    },
-    {
-      "urls": [
-        {
-          "search_url": "https://www.ecosia.org/search?q={searchTerms}&addon=opensearch"
-        }
-      ],
-      "schema": 1710167605249,
-      "engineName": "Ecosia",
-      "overridesId": "ecosia@search.mozilla.org",
-      "thirdPartyId": "opensearch@search.mozilla.org",
-      "id": "a5f64364-3fdf-426e-94cf-b499460a58c9",
-      "last_modified": 1710168995099
-    },
-    {
-      "urls": [
-        {
-          "search_url": "https://www.qwant.com/?q={searchTerms}&client=ext-firefox-sb"
-        }
-      ],
-      "schema": 1710167604639,
-      "overridesId": "qwant@search.mozilla.org",
-      "thirdPartyId": "qwantcomforfirefox@jetpack",
-      "id": "b5b71917-3375-40d2-a538-3d07bfb989ac",
-      "last_modified": 1710168995095
-    },
-    {
-      "urls": [
-        {
-          "search_url": "https://www.qwant.com/?q={searchTerms}&client=ext-firefox-sb"
-        }
-      ],
-      "schema": 1710115218582,
-      "overridesId": "qwant@search.mozilla.org",
-      "thirdPartyId": "qwant-search-firefox@qwant.com",
-      "id": "c5de2b3f-da15-4bc5-b36f-9555043b5ef4",
-      "last_modified": 1710168995091
+      "thirdPartyId": "qwant-p1-firefox@qwant.com",
+      "overridesAppIdv2": "qwant",
+      "id": "ecdce1ec-bbc3-47fa-9908-d82c3133a4d0",
+      "last_modified": 1721063513248
     },
     {
       "urls": [
@@ -56,12 +19,70 @@
           "search_url": "https://duckduckgo.com/?q={searchTerms}&t=newext"
         }
       ],
-      "schema": 1590435694495,
+      "schema": 1721062219338,
       "overridesId": "ddg@search.mozilla.org",
       "thirdPartyId": "jid1-ZAdIEUB7XOzOJw@jetpack",
+      "overridesAppIdv2": "ddg",
       "id": "c5de2b3f-da15-4bc5-b36f-9555043b5ef3",
-      "last_modified": 1595254618540
+      "last_modified": 1721063513245
+    },
+    {
+      "urls": [
+        {
+          "search_url": "https://www.qwant.com/?q={searchTerms}&client=ext-firefox-sb"
+        }
+      ],
+      "schema": 1721062177273,
+      "overridesId": "qwant@search.mozilla.org",
+      "thirdPartyId": "qwantcomforfirefox@jetpack",
+      "overridesAppIdv2": "qwant",
+      "id": "b5b71917-3375-40d2-a538-3d07bfb989ac",
+      "last_modified": 1721063513243
+    },
+    {
+      "urls": [
+        {
+          "search_url": "https://www.ecosia.org/search?q={searchTerms}&addon=opensearch"
+        }
+      ],
+      "schema": 1721062201232,
+      "engineName": "Ecosia",
+      "overridesId": "ecosia@search.mozilla.org",
+      "thirdPartyId": "opensearch@search.mozilla.org",
+      "overridesAppIdv2": "ecosia",
+      "id": "a5f64364-3fdf-426e-94cf-b499460a58c9",
+      "last_modified": 1721063513241
+    },
+    {
+      "urls": [
+        {
+          "search_url": "https://www.qwant.com?q={searchTerms}&client=opensearch"
+        }
+      ],
+      "schema": 1721062208990,
+      "engineName": "Qwant",
+      "overridesId": "qwant@search.mozilla.org",
+      "thirdPartyId": "opensearch@search.mozilla.org",
+      "overridesAppIdv2": "qwant",
+      "id": "fc297e76-6e20-48ba-8474-919e3e4380bf",
+      "last_modified": 1721063513239
+    },
+    {
+      "urls": [
+        {
+          "search_url": "https://www.qwant.com/?q={searchTerms}&client=ext-firefox-sb"
+        },
+        {
+          "search_url": "https://www.qwant.com/?q={searchTerms}&client=plgn-firefox-sb"
+        }
+      ],
+      "schema": 1721061561202,
+      "overridesId": "qwant@search.mozilla.org",
+      "thirdPartyId": "qwant-search-firefox@qwant.com",
+      "overridesAppIdv2": "qwant",
+      "id": "c5de2b3f-da15-4bc5-b36f-9555043b5ef4",
+      "last_modified": 1721063513237
     }
   ],
-  "timestamp": 1710168995103
+  "timestamp": 1721063513248
 }

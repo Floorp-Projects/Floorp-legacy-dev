@@ -114,6 +114,7 @@ class Pernosco(TryConfig):
         return super().add_arguments(group)
 
     def try_config(self, pernosco, **kwargs):
+        pernosco = pernosco or os.environ.get("MOZ_USE_PERNOSCO")
         if pernosco is None:
             return
 
@@ -158,9 +159,12 @@ class Pernosco(TryConfig):
                         break
 
         return {
+            "pernosco": True,
+            # TODO Bug 1907076: Remove the env below once Pernosco consumers
+            # are using the `pernosco-v1` task routes.
             "env": {
                 "PERNOSCO": str(int(pernosco)),
-            }
+            },
         }
 
     def validate(self, **kwargs):

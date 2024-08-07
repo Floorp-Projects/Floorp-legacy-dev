@@ -884,6 +884,8 @@ items from that key's value."
             work_dir,
             "--config-file",
             "multi_locale/android-mozharness-build.json",
+            "--config-file",
+            "multi_locale/tc_common.py",
             "--pull-locale-source",
             "--package-multi",
             "--summary",

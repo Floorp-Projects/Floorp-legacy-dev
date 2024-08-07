@@ -561,6 +561,8 @@ class TrackBuffersManager final
   // mTaskQueue. However, there's special locking around mTaskQueue, so we keep
   // both for now.
   Maybe<EventTargetCapability<TaskQueue>> mTaskQueueCapability;
+
+  Maybe<media::TimeUnit> mFrameEndTimeBeforeRecreateDemuxer;
 };
 
 }  // namespace mozilla

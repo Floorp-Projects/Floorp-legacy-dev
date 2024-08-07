@@ -155,6 +155,23 @@ class HostIPCAllocator : public ISurfaceAllocator {
   bool mAboutToSendAsyncMessages = false;
 };
 
+class ShmemSection {
+ public:
+  static Maybe<ShmemSection> FromUntrusted(
+      const UntrustedShmemSection& aUntrusted);
+  bool Init(const mozilla::ipc::Shmem& aShm, uint32_t offset, uint32_t size);
+  UntrustedShmemSection AsUntrusted();
+
+  uint32_t size() const { return mSize; }
+  uint32_t offset() const { return mOffset; }
+  const mozilla::ipc::Shmem& shmem() { return mShmem; }
+
+ private:
+  mozilla::ipc::Shmem mShmem;
+  uint32_t mOffset;
+  uint32_t mSize;
+};
+
 /// An allocator that can group allocations in bigger chunks of shared memory.
 ///
 /// The allocated shmem sections can only be deallocated by the same allocator

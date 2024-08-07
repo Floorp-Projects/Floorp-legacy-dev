@@ -31,42 +31,43 @@ jobs:
             l10n-bump-info:
                 by-behavior:
                     central-to-beta:
-                        name: Firefox l10n changesets
-                        path: browser/locales/l10n-changesets.json
-                        version-path: browser/config/version.txt
-                        l10n-repo-url: "https://hg.mozilla.org/l10n-central/%(locale)s/json-pushes?version=2&tipsonly=1"
-                        ignore-config:
-                            ja:
-                                - macosx64
-                                - macosx64-devedition
-                            ja-JP-mac:
-                                - linux
-                                - linux-devedition
-                                - linux64
-                                - linux64-devedition
-                                - win32
-                                - win32-devedition
-                                - win64
-                                - win64-devedition
-                                - win64-aarch64
-                                - win64-aarch64-devedition
-                        platform-configs: [{
-                            "platforms": [
-                                "linux",
-                                "linux-devedition",
-                                "linux64",
-                                "linux64-devedition",
-                                "macosx64",
-                                "macosx64-devedition",
-                                "win32",
-                                "win32-devedition",
-                                "win64",
-                                "win64-devedition",
-                                "win64-aarch64",
-                                "win64-aarch64-devedition",
-                            ],
-                            "path": "browser/locales/shipped-locales",
-                        }]
+                        - name: Firefox l10n changesets
+                          path: browser/locales/l10n-changesets.json
+                          version-path: browser/config/version.txt
+                          l10n-repo-url: https://github.com/mozilla-l10n/firefox-l10n
+                          l10n-repo-target-branch: main
+                          ignore-config:
+                              ja:
+                                  - macosx64
+                                  - macosx64-devedition
+                              ja-JP-mac:
+                                  - linux
+                                  - linux-devedition
+                                  - linux64
+                                  - linux64-devedition
+                                  - win32
+                                  - win32-devedition
+                                  - win64
+                                  - win64-devedition
+                                  - win64-aarch64
+                                  - win64-aarch64-devedition
+                          platform-configs: [{
+                              "platforms": [
+                                  "linux",
+                                  "linux-devedition",
+                                  "linux64",
+                                  "linux64-devedition",
+                                  "macosx64",
+                                  "macosx64-devedition",
+                                  "win32",
+                                  "win32-devedition",
+                                  "win64",
+                                  "win64-devedition",
+                                  "win64-aarch64",
+                                  "win64-aarch64-devedition",
+                              ],
+                              "path": "browser/locales/shipped-locales",
+                          }]
                     default: null
         run-on-projects: []
         expiration-policy: long

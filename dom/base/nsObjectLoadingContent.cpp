@@ -2241,7 +2241,8 @@ void nsObjectLoadingContent::MaybeStoreCrossOriginFeaturePolicy() {
 
   FeaturePolicy* featurePolicy = thisContent->OwnerDoc()->FeaturePolicy();
 
-  if (ContentChild* cc = ContentChild::GetSingleton()) {
-    Unused << cc->SendSetContainerFeaturePolicy(browsingContext, featurePolicy);
+  if (ContentChild* cc = ContentChild::GetSingleton(); cc && featurePolicy) {
+    Unused << cc->SendSetContainerFeaturePolicy(
+        browsingContext, Some(featurePolicy->ToFeaturePolicyInfo()));
   }
 }

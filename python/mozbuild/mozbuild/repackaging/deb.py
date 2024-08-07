@@ -330,7 +330,7 @@ def _create_fluent_localizations(
     fluent_resource_loader, fluent_localization, release_type, release_product, log
 ):
     brand_fluent_filename = "brand.ftl"
-    l10n_central_url = "https://hg.mozilla.org/l10n-central"
+    l10n_central_url = "https://raw.githubusercontent.com/mozilla-l10n/firefox-l10n"
     desktop_entry_fluent_filename = "linuxDesktopEntry.ftl"
 
     l10n_dir = tempfile.mkdtemp()
@@ -362,16 +362,7 @@ def _create_fluent_localizations(
                 localized_desktop_entry_filename,
             )
         else:
-            non_en_US_desktop_entry_fluent_filename = os.path.join(
-                "browser/browser", desktop_entry_fluent_filename
-            )
-            non_en_US_fluent_resource_file_url = os.path.join(
-                l10n_central_url,
-                locale,
-                "raw-file",
-                linux_l10n_changesets[locale]["revision"],
-                non_en_US_desktop_entry_fluent_filename,
-            )
+            non_en_US_fluent_resource_file_url = f"{l10n_central_url}/{linux_l10n_changesets[locale]['revision']}/{locale}/browser/browser/{desktop_entry_fluent_filename}"
             response = requests.get(non_en_US_fluent_resource_file_url)
             response = retry(
                 requests.get,

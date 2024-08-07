@@ -1292,17 +1292,11 @@ PopupNotifications.prototype = {
       }
     }
 
-    // Remember the time the notification was shown for the security delay.
-    notificationsToShow.forEach(
-      n =>
-        (n.timeShown = Math.max(
-          this.window.performance.now(),
-          n.timeShown ?? 0
-        ))
-    );
-
     if (this.isPanelOpen && this._currentAnchorElement == anchorElement) {
       notificationsToShow.forEach(function (n) {
+        // If the panel is already open remember the time the notification was
+        // shown for the security delay.
+        n.timeShown = Math.max(this.window.performance.now(), n.timeShown ?? 0);
         this._fireCallback(n, NOTIFICATION_EVENT_SHOWN);
       }, this);
 
@@ -1378,6 +1372,12 @@ PopupNotifications.prototype = {
         this._popupshownListener = null;
 
         notificationsToShow.forEach(function (n) {
+          // The panel has been opened, remember the time the notification was
+          // shown for the security delay.
+          n.timeShown = Math.max(
+            this.window.performance.now(),
+            n.timeShown ?? 0
+          );
           this._fireCallback(n, NOTIFICATION_EVENT_SHOWN);
         }, this);
         // These notifications are used by tests to know when all the processing

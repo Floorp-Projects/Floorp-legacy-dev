@@ -47,7 +47,7 @@ AccessibleData DocAccessibleChildBase::SerializeAcc(LocalAccessible* aAcc) {
     // action. However, that requires an ancestor walk which is too expensive
     // here. eActionable is only used by ATK. For now, we only expose ancestor
     // actions on text leaf and image Accessibles. This means that we don't
-    // support "click ancestor" for ATK.
+    // support "clickAncestor" for ATK.
     if (aAcc->ActionCount()) {
       genericTypes |= eActionable;
     }

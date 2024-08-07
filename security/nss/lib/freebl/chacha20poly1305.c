@@ -210,12 +210,14 @@ ChaCha20Xor(uint8_t *output, uint8_t *block, uint32_t len, uint8_t *k,
 #ifndef NSS_DISABLE_AVX2
     if (avx2_support()) {
         Hacl_Chacha20_Vec256_chacha20_encrypt_256(len, output, block, k, nonce, ctr);
+        return;
     }
 #endif
 
 #ifndef NSS_DISABLE_SSE3
     if (ssse3_support() && sse4_1_support() && avx_support()) {
         Hacl_Chacha20_Vec128_chacha20_encrypt_128(len, output, block, k, nonce, ctr);
+        return;
     }
 #endif
 
@@ -223,10 +225,12 @@ ChaCha20Xor(uint8_t *output, uint8_t *block, uint32_t len, uint8_t *k,
     !defined(NSS_DISABLE_ALTIVEC) && !defined(NSS_DISABLE_CRYPTO_VSX)
     if (ppc_crypto_support()) {
         chacha20vsx(len, output, block, k, nonce, ctr);
-    } else
+        return;
+    }
 #endif
     {
         Hacl_Chacha20_chacha20_encrypt(len, output, block, k, nonce, ctr);
+        return;
     }
 }
 #endif /* NSS_DISABLE_CHACHAPOLY */
@@ -446,8 +450,6 @@ ChaCha20Poly1305_Encrypt(const ChaCha20Poly1305Context *ctx,
         goto finish;
     }
 #endif
-
-    else
 #elif defined(__powerpc64__) && defined(__LITTLE_ENDIAN__) && \
     !defined(NSS_DISABLE_ALTIVEC) && !defined(NSS_DISABLE_CRYPTO_VSX)
     if (ppc_crypto_support()) {
@@ -455,7 +457,7 @@ ChaCha20Poly1305_Encrypt(const ChaCha20Poly1305Context *ctx,
             (uint8_t *)ctx->key, (uint8_t *)nonce, adLen, (uint8_t *)ad, inputLen,
             (uint8_t *)input, output, outTag);
         goto finish;
-    } else
+    }
 #endif
     {
         Hacl_Chacha20Poly1305_32_aead_encrypt(

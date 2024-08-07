@@ -5,7 +5,20 @@
 "use strict";
 
 if (!window.ramblerIdHelper) {
-  const originalScript = document.currentScript.src;
+  const originalScript = (() => {
+    const src = document.currentScript?.src;
+    try {
+      const { protocol, hostname, pathname, href } = new URL(src);
+      if (
+        (protocol === "http:" || protocol === "https:") &&
+        hostname === "id.rambler.ru" &&
+        pathname === "rambler-id-helper/auth_events.js"
+      ) {
+        return href;
+      }
+    } catch (_) {}
+    return "https://id.rambler.ru/rambler-id-helper/auth_events.js";
+  })();
 
   const sendMessageToAddon = (function () {
     const shimId = "Rambler";

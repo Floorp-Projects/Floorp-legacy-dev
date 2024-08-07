@@ -150,7 +150,8 @@ class ChannelWrapper final : public DOMEventTargetHelper,
                                 nsIRemoteTab* aBrowserParent);
 
   already_AddRefed<nsITraceableChannel> GetTraceableChannel(
-      nsAtom* aAddonId, dom::ContentParent* aContentParent) const;
+      const WebExtensionPolicy& aAddon,
+      dom::ContentParent* aContentParent) const;
 
   void GetMethod(nsCString& aRetVal) const;
 

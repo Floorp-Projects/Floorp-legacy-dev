@@ -36,10 +36,11 @@ UniquePtr<WebRequestChannelEntry> WebRequestService::RegisterChannel(
 }
 
 already_AddRefed<nsITraceableChannel> WebRequestService::GetTraceableChannel(
-    uint64_t aChannelId, nsAtom* aAddonId, ContentParent* aContentParent) {
+    uint64_t aChannelId, const WebExtensionPolicy& aAddon,
+    ContentParent* aContentParent) {
   if (auto entry = mChannelEntries.Get(aChannelId)) {
     if (entry->mChannel) {
-      return entry->mChannel->GetTraceableChannel(aAddonId, aContentParent);
+      return entry->mChannel->GetTraceableChannel(aAddon, aContentParent);
     }
   }
   return nullptr;

@@ -15,7 +15,21 @@
 if (!window.vidible?.version) {
   const PlayIconURL = "https://smartblock.firefox.etp/play.svg";
 
-  const originalScript = document.currentScript.src;
+  const originalScript = (() => {
+    const src = document.currentScript?.src;
+    try {
+      const { protocol, hostname, pathname, href } = new URL(src);
+      if (
+        (protocol === "http:" || protocol === "https:") &&
+        pathname.endsWith("/vidible-min.js") &&
+        (hostname.endsWith(".vidible.tv") ||
+          hostname === "vdb-cdn-files.s3.amazonaws.com")
+      ) {
+        return href;
+      }
+    } catch (_) {}
+    return "https://cdn-ssl.vidible.tv/prod/player/js/21.1.1/vidible-min.js";
+  })();
 
   const getGUID = () => {
     const v = crypto.getRandomValues(new Uint8Array(20));

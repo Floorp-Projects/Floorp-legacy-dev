@@ -26,6 +26,7 @@ import mozpack.path as mozpath
 import mozversioncontrol
 import requests
 from fluent.syntax.parser import FluentParser
+from hglib.error import ServerError
 from mozpack.chrome.manifest import Manifest, ManifestLocale, parse_manifest
 
 from mozbuild.configure.util import Version
@@ -113,7 +114,16 @@ def get_dt_from_hg(path):
 def get_timestamp_for_locale(path):
     dt = None
     if os.path.isdir(os.path.join(path, ".hg")):
-        dt = get_dt_from_hg(path)
+        dt = None
+        # This can be removed once we're no longer repacking from hg l10n repos.
+        try:
+            dt = get_dt_from_hg(path)
+        except ServerError as se:
+            # This rare condition can happen if we try to repack from a
+            # git l10n repository after having already repacked from an
+            # hg l10n repository on the same machine.
+            if "sharedpath points to nonexistent directory" not in str(se):
+                raise se
 
     if dt is None:
         dt = get_build_date()

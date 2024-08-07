@@ -26,7 +26,24 @@ if (!window.FB) {
   const FacebookLogoURL = "https://smartblock.firefox.etp/facebook.svg";
   const PlayIconURL = "https://smartblock.firefox.etp/play.svg";
 
-  const originalUrl = document.currentScript.src;
+  const originalUrl = (() => {
+    const src = document.currentScript?.src;
+    try {
+      const { protocol, hostname, pathname, href } = new URL(src);
+      if (
+        (protocol === "http:" || protocol === "https:") &&
+        hostname === "connect.facebook.net" &&
+        (pathname.endsWith("/sdk.js") || pathname.endsWith("/all.js"))
+      ) {
+        return href;
+      }
+      if (href.includes("all.js")) {
+        // Legacy SDK.
+        return "https://connect.facebook.net/en_US/all.js";
+      }
+    } catch (_) {}
+    return "https://connect.facebook.net/en_US/sdk.js";
+  })();
 
   let haveUnshimmed;
   let initInfo;

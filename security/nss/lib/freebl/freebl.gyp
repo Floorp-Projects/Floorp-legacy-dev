@@ -866,12 +866,6 @@
           }],
         ],
       }],
-      [ 'supports_vale_curve25519==1', {
-        'defines': [
-          # The Makefile does version-tests on GCC, but we're not doing that here.
-          'HACL_CAN_COMPILE_INLINE_ASM',
-        ],
-      }],
       [ 'OS=="linux" or OS=="android"', {
         'conditions': [
           [ 'target_arch=="x64"', {
@@ -934,11 +928,6 @@
   'variables': {
     'module': 'nss',
     'conditions': [
-      [ 'target_arch=="x64" and cc_is_gcc==1', {
-        'supports_vale_curve25519%': 1,
-      }, {
-        'supports_vale_curve25519%': 0,
-      }],
       [ 'target_arch=="x64" or target_arch=="arm64" or target_arch=="aarch64"', {
         'have_int128_support%': 1,
       }, {

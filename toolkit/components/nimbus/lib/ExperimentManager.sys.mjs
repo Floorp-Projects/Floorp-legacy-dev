@@ -78,8 +78,9 @@ export class _ExperimentManager {
 
   get studiesEnabled() {
     return (
-      Services.prefs.getBoolPref(UPLOAD_ENABLED_PREF) &&
-      Services.prefs.getBoolPref(STUDIES_OPT_OUT_PREF)
+      Services.prefs.getBoolPref(UPLOAD_ENABLED_PREF, false) &&
+      Services.prefs.getBoolPref(STUDIES_OPT_OUT_PREF, false) &&
+      Services.policies.isAllowed("Shield")
     );
   }
 

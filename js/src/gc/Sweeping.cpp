@@ -2269,7 +2269,26 @@ bool GCRuntime::initSweepActions() {
   return sweepActions != nullptr;
 }
 
+void GCRuntime::prepareForSweepSlice(JS::GCReason reason) {
+  // Work that must be done at the start of each slice where we sweep.
+  //
+  // Since this must happen at the start of the slice, it must be called in
+  // marking slices before any sweeping happens. Therefore it is called
+  // conservatively since we may not always transition to sweeping from marking.
+
+  // Clear out whole cell store buffer entries to unreachable cells.
+  if (storeBuffer().mayHavePointersToDeadCells()) {
+    collectNurseryFromMajorGC(reason);
+  }
+
+  // Trace wrapper rooters before marking if we might start sweeping in
+  // this slice.
+  rt->mainContextFromOwnThread()->traceWrapperGCRooters(marker().tracer());
+}
+
 IncrementalProgress GCRuntime::performSweepActions(SliceBudget& budget) {
+  MOZ_ASSERT(!storeBuffer().mayHavePointersToDeadCells());
+
   AutoMajorGCProfilerEntry s(this);
   gcstats::AutoPhase ap(stats(), gcstats::PhaseKind::SWEEP);
 
@@ -2283,20 +2302,19 @@ IncrementalProgress GCRuntime::performSweepActions(SliceBudget& budget) {
   // Drain the mark stack, possibly in a parallel task if we're in a part of
   // sweeping that allows it.
   //
-  // In the first sweep slice where we must not yield to the mutator until we've
-  // starting sweeping a sweep group but in that case the stack must be empty
-  // already.
+  // The first time we enter the sweep phase we must not yield to the mutator
+  // until we've starting sweeping a sweep group but in that case the stack must
+  // be empty already.
 
-#ifdef DEBUG
   MOZ_ASSERT(initialState <= State::Sweep);
-  if (initialState != State::Sweep) {
-    assertNoMarkingWork();
-  }
-#endif
+  bool startOfSweeping = initialState < State::Sweep;
 
-  if (initialState == State::Sweep &&
-      markDuringSweeping(gcx, budget) == NotFinished) {
-    return NotFinished;
+  if (startOfSweeping) {
+    assertNoMarkingWork();
+  } else {
+    if (markDuringSweeping(gcx, budget) == NotFinished) {
+      return NotFinished;
+    }
   }
 
   // Then continue running sweep actions.

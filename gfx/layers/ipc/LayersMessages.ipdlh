@@ -241,7 +241,7 @@ struct CompositorAnimations {
   uint64_t id;
 };
 
-struct ShmemSection {
+struct UntrustedShmemSection {
   Shmem shmem;
   uint32_t offset;
   uint32_t size;
@@ -252,7 +252,7 @@ struct CrossProcessSemaphoreDescriptor {
 };
 
 union ReadLockDescriptor {
-  ShmemSection;
+  UntrustedShmemSection;
   CrossProcessSemaphoreDescriptor;
   uintptr_t;
   null_t;

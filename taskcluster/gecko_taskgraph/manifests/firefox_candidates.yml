@@ -224,23 +224,6 @@ mapping:
         checksums_path: ${path_platform}/xpi/${locale}.xpi
         destinations:
             - ${version}-candidates/build${build_number}/${path_platform}/xpi
-    target.langpack.deb:
-        <<: *default
-        all_locales: true
-        description: "langpack.xpi repackaged as a .deb"
-        locale_prefix: ''
-        from:
-            - repackage-deb-l10n
-        only_for_platforms:
-            - linux-shippable
-            - linux64-shippable
-            - linux-devedition
-            - linux64-devedition
-        pretty_name: ${locale}.deb
-        checksums_path: ${path_platform}/deb-l10n/${locale}.deb
-        destinations:
-            - ${version}-candidates/build${build_number}/${path_platform}/deb-l10n
-        update_balrog_manifest: false
     mar:
         <<: *default
         description: "Alongside `mbsdiff`, a tool used to generate partials"
@@ -402,19 +385,6 @@ mapping:
         update_balrog_manifest: true
         destinations:
             - ${version}-candidates/build${build_number}/update/${path_platform}
-    target.deb:
-        <<: *default
-        description: "Firefox as a .deb package"
-        only_for_platforms:
-            - linux-shippable
-            - linux64-shippable
-            - linux-devedition
-            - linux64-devedition
-        pretty_name: firefox-${version}.deb
-        checksums_path: ${path_platform}/${locale}/firefox-${version}.deb
-        from:
-            - repackage-deb
-        update_balrog_manifest: false
     ${partial}:
         <<: *default
         description: "Partials MAR files to serve as updates"

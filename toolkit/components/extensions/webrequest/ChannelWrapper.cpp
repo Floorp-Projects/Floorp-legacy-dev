@@ -179,7 +179,7 @@ already_AddRefed<ChannelWrapper> ChannelWrapper::GetRegisteredChannel(
   auto& webreq = WebRequestService::GetSingleton();
 
   nsCOMPtr<nsITraceableChannel> channel =
-      webreq.GetTraceableChannel(aChannelId, aAddon.Id(), contentParent);
+      webreq.GetTraceableChannel(aChannelId, aAddon, contentParent);
   if (!channel) {
     return nullptr;
   }
@@ -820,9 +820,15 @@ void ChannelWrapper::RegisterTraceableChannel(const WebExtensionPolicy& aAddon,
 }
 
 already_AddRefed<nsITraceableChannel> ChannelWrapper::GetTraceableChannel(
-    nsAtom* aAddonId, dom::ContentParent* aContentParent) const {
+    const WebExtensionPolicy& aAddon,
+    dom::ContentParent* aContentParent) const {
   nsCOMPtr<nsIRemoteTab> remoteTab;
-  if (mAddonEntries.Get(aAddonId, getter_AddRefs(remoteTab))) {
+  if (mAddonEntries.Get(aAddon.Id(), getter_AddRefs(remoteTab))) {
+    if (FinalURLInfo().URI() &&
+        !aAddon.CanAccessURI(FinalURLInfo(), false, true, true)) {
+      return nullptr;
+    }
+
     ContentParent* contentParent = nullptr;
     if (remoteTab) {
       contentParent =

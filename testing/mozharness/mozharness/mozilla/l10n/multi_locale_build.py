@@ -64,15 +64,6 @@ class MultiLocaleBuild(LocalesMixin, MercurialScript):
                 "help": "Specify the L10n tag",
             },
         ],
-        [
-            ["--tag-override"],
-            {
-                "action": "store",
-                "dest": "tag_override",
-                "type": "string",
-                "help": "Override the tags set for all repos",
-            },
-        ],
     ]
 
     def __init__(self, require_config_file=True):

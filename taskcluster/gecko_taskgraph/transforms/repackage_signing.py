@@ -25,10 +25,10 @@ repackage_signing_description_schema = schema.extend(
 )
 
 SIGNING_FORMATS = {
-    "target.installer.exe": ["autograph_authenticode_sha2_stub"],
-    "target.stub-installer.exe": ["autograph_authenticode_sha2_stub"],
-    "target.installer.msi": ["autograph_authenticode_sha2"],
-    "target.installer.msix": ["autograph_authenticode_sha2"],
+    "target.installer.exe": ["autograph_authenticode_202404_stub"],
+    "target.stub-installer.exe": ["autograph_authenticode_202404_stub"],
+    "target.installer.msi": ["autograph_authenticode_202404"],
+    "target.installer.msix": ["autograph_authenticode_202404"],
 }
 
 transforms = TransformSequence()

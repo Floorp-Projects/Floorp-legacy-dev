@@ -151,11 +151,6 @@
         'ecl/curve25519_32.c',
       ],
     }],
-    ['supports_vale_curve25519==1', {
-      'sources': [
-        'verified/Hacl_Curve25519_64.c',
-      ],
-    }],
     ['(target_arch!="ppc64" and target_arch!="ppc64le") or disable_altivec==1', {
       'sources': [
         # Gyp does not support per-file cflags, so working around like this.

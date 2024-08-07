@@ -106,7 +106,7 @@ def make_signing_description(config, jobs):
 
 def _craft_upstream_artifacts(dep_job, dependency_kind, build_platform):
     if build_platform.startswith("win"):
-        signing_format = "autograph_authenticode_sha2"
+        signing_format = "autograph_authenticode_202404"
     elif build_platform.startswith("linux"):
         signing_format = "autograph_gpg"
     elif build_platform.startswith("macosx"):

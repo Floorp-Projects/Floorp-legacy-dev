@@ -83,9 +83,7 @@ class VCSMixin(object):
             args=(vcs_obj, kwargs["dest"]),
         )
 
-    def vcs_checkout_repos(
-        self, repo_list, parent_dir=None, tag_override=None, **kwargs
-    ):
+    def vcs_checkout_repos(self, repo_list, parent_dir=None, **kwargs):
         """Check out a list of repos."""
         orig_dir = os.getcwd()
         c = self.config
@@ -98,8 +96,6 @@ class VCSMixin(object):
         for repo_dict in repo_list:
             kwargs = deepcopy(kwargs_orig)
             kwargs.update(repo_dict)
-            if tag_override:
-                kwargs["branch"] = tag_override
             dest = self.query_dest(kwargs)
             revision_dict[dest] = {"repo": kwargs["repo"]}
             revision_dict[dest]["revision"] = self.vcs_checkout(**kwargs)

@@ -1,7 +1,7 @@
 {
   "name": "Qwant",
   "manifest_version": 2,
-  "version": "1.4",
+  "version": "1.5",
   "browser_specific_settings": {
     "gecko": {
       "id": "qwant@search.mozilla.org"
@@ -9,9 +9,9 @@
   },
   "hidden": true,
   "icons": {
-    "16": "favicon.ico"
+    "16": "favicon.png"
   },
-  "web_accessible_resources": ["favicon.ico"],
+  "web_accessible_resources": ["favicon.png"],
   "chrome_settings_overrides": {
     "search_provider": {
       "keyword": "@qwant",

@@ -16,7 +16,6 @@
 #include "nsHashKeys.h"
 #include "nsTHashMap.h"
 
-class nsAtom;
 class nsIRemoteTab;
 class nsITraceableChannel;
 
@@ -62,7 +61,7 @@ class WebRequestService final {
   void UnregisterTraceableChannel(uint64_t aChannelId);
 
   already_AddRefed<nsITraceableChannel> GetTraceableChannel(
-      uint64_t aChannelId, nsAtom* aAddonId,
+      uint64_t aChannelId, const WebExtensionPolicy& aAddon,
       dom::ContentParent* aContentParent);
 
  private:

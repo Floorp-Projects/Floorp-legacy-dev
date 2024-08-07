@@ -506,12 +506,6 @@ mozilla::ipc::IPCResult WindowGlobalChild::RecvResetScalingZoom() {
   return IPC_OK();
 }
 
-mozilla::ipc::IPCResult WindowGlobalChild::RecvSetContainerFeaturePolicy(
-    dom::FeaturePolicy* aContainerFeaturePolicy) {
-  mContainerFeaturePolicy = aContainerFeaturePolicy;
-  return IPC_OK();
-}
-
 mozilla::ipc::IPCResult WindowGlobalChild::RecvRestoreDocShellState(
     const dom::sessionstore::DocShellRestoreState& aState,
     RestoreDocShellStateResolver&& aResolve) {

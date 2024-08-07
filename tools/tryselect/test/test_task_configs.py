@@ -137,7 +137,7 @@ def test_pernosco(patch_pernosco_email_check):
     cfg = Pernosco()
     cfg.add_arguments(parser)
     args = parser.parse_args(["--pernosco"])
-    assert cfg.try_config(**vars(args)) == {"env": {"PERNOSCO": "1"}}
+    assert cfg.try_config(**vars(args)) == {"env": {"PERNOSCO": "1"}, "pernosco": True}
 
 
 if __name__ == "__main__":

@@ -236,8 +236,8 @@ void HTMLIFrameElement::MaybeStoreCrossOriginFeaturePolicy() {
   }
 
   if (ContentChild* cc = ContentChild::GetSingleton()) {
-    Unused << cc->SendSetContainerFeaturePolicy(browsingContext,
-                                                mFeaturePolicy);
+    Unused << cc->SendSetContainerFeaturePolicy(
+        browsingContext, Some(mFeaturePolicy->ToFeaturePolicyInfo()));
   }
 }
 

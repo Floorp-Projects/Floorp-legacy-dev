@@ -67,7 +67,7 @@ def make_signing_description(config, jobs):
 
         if "win" in build_platform:
             # job['primary-dependency'].task['payload']['command']
-            upstream_artifact["formats"] = ["autograph_authenticode_sha2"]
+            upstream_artifact["formats"] = ["autograph_authenticode_202404"]
         elif "mac" in build_platform:
             upstream_artifact["formats"] = ["mac_single_file"]
             upstream_artifact["singleFileGlobs"] = ["libgmpopenh264.dylib"]

@@ -98,14 +98,14 @@ def generate_specifications_of_artifacts_to_sign(
                 "artifacts": [
                     get_artifact_path(job, "{locale}/setup.exe"),
                 ],
-                "formats": ["autograph_authenticode_sha2"],
+                "formats": ["autograph_authenticode_202404"],
             },
             {
                 "artifacts": [
                     get_artifact_path(job, "{locale}/target.zip"),
                 ],
                 "formats": [
-                    "autograph_authenticode_sha2",
+                    "autograph_authenticode_202404",
                     "autograph_widevine",
                     "autograph_omnija",
                 ],

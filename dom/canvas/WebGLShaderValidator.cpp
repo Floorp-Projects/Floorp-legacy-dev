@@ -191,6 +191,36 @@ std::unique_ptr<webgl::ShaderValidator> WebGLContext::CreateShaderValidator(
 #endif
   }
 
+  // -
+
+  resources.MaxVariableSizeInBytes = [&]() -> size_t {
+    const auto kibytes = StaticPrefs::webgl_glsl_max_var_size_in_kibytes();
+    if (kibytes >= 0) {
+      return static_cast<size_t>(kibytes) * 1024;
+    }
+
+    return resources.MaxVariableSizeInBytes;
+  }();
+
+  resources.MaxPrivateVariableSizeInBytes = [&]() -> size_t {
+    const auto bytes = StaticPrefs::webgl_glsl_max_private_var_size_in_bytes();
+    if (bytes >= 0) {
+      return static_cast<size_t>(bytes);
+    }
+
+    if (gl->IsMesa()) {
+      return 4 * 4 * 1024;  // 4K words
+    }
+
+    if (kIsMacOS) {
+      return 128 * 1024;  // 8k vec4s
+    }
+
+    return resources.MaxPrivateVariableSizeInBytes;
+  }();
+
+  // -
+
   const auto compileOptions =
       webgl::ChooseValidatorCompileOptions(resources, gl);
   auto ret = webgl::ShaderValidator::Create(shaderType, spec, outputLanguage,

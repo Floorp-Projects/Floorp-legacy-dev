@@ -132,6 +132,11 @@ try_task_config_schema = Schema(
             description="Options passed from `mach perftest` to try.",
         ): object,
         Optional(
+            "pernosco",
+            description="Record an rr trace on supported tasks using the Pernosco debugging "
+            "service.",
+        ): bool,
+        Optional(
             "optimize-strategies",
             description="Alternative optimization strategies to use instead of the default. "
             "A module path pointing to a dict to be use as the `strategy_override` "

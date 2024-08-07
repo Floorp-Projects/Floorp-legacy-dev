@@ -6,15 +6,7 @@
       "pattern": "*.geetest.com",
       "id": "f2a88631-c444-49d1-b377-c25608ef0018",
       "last_modified": 1701090424142
-    },
-    {
-      "schema": 1701082018913,
-      "feature": "tracking-annotation",
-      "pattern": "d3vox9szr7t2nm.cloudfront.net",
-      "filter_expression": "env.version < '122'",
-      "id": "01eb9187-ab15-4851-a014-441381e3cd02",
-      "last_modified": 1701090424139
     }
   ],
-  "timestamp": 1716288373828
+  "timestamp": 1720004688246
 }

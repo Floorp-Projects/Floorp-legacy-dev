@@ -8,6 +8,8 @@ Releases
    :glob:
    :hidden:
 
+   nss_3_90_3.rst
+   nss_3_90_2.rst
    nss_3_90_1.rst
    nss_3_90_0.rst
    nss_3_89_1.rst
@@ -55,13 +57,16 @@ Releases
 
 .. note::
 
-   **NSS 3.90.1 (ESR)** is the latest version of NSS.
+   **NSS 3.90.3 (ESR)** is the latest version of NSS.
    Complete release notes are available here: :ref:`mozilla_projects_nss_nss_3_91_0_release_notes`
 
 
 .. container::
 
-   Changes in 3.90.1 included in this release:
+   Changes in 3.90.3 included in this release:
 
-   - Bug 1813401 - regenerate NameConstraints test certificates.
-   - Bug 1854795 - add OSXSAVE and XCR0 tests to AVX2 detection.
+   - Bug 1901080 - GLOBALTRUST 2020: Set Distrust After for TLS and S/MIME.
+   - Bug 1748105 - clean up escape handling.
+   - Bug 1895032 - remove redundant AllocItem implementation. r=nss-reviewers,rrelyea
+   - Bug 1836925 - Disable ASM support for Curve25519.
+   - Bug 1836781 - Disable ASM support for Curve25519 for all but X86_64.

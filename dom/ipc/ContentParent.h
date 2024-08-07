@@ -1423,7 +1423,7 @@ class ContentParent final : public PContentParent,
 
   mozilla::ipc::IPCResult RecvSetContainerFeaturePolicy(
       const MaybeDiscardedBrowsingContext& aContainerContext,
-      FeaturePolicy* aContainerFeaturePolicy);
+      MaybeFeaturePolicyInfo&& aContainerFeaturePolicyInfo);
 
   mozilla::ipc::IPCResult RecvGetSystemIcon(nsIURI* aURI,
                                             GetSystemIconResolver&& aResolver);

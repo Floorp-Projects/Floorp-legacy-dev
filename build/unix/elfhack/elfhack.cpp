@@ -1108,7 +1108,7 @@ int do_relocation_section(Elf* elf, unsigned int rel_type,
   // can actually use it)
   if (elf->getSegmentByType(PT_GNU_RELRO)) {
     ElfSection* gnu_versym = dyn->getSectionForType(DT_VERSYM);
-    auto lookup = [&symtab, &gnu_versym](const char* symbol) {
+    auto ensure_symbol = [&symtab, &gnu_versym](const char* symbol) {
       Elf_SymValue* sym_value = symtab->lookup(symbol, STT(FUNC));
       if (!sym_value) {
         symtab->syms.emplace_back();
@@ -1130,11 +1130,13 @@ int do_relocation_section(Elf* elf, unsigned int rel_type,
           gnu_versym->grow(gnu_versym->getSize() + gnu_versym->getEntSize());
         }
       }
-      return sym_value;
     };
-
-    Elf_SymValue* mprotect = lookup("mprotect");
-    Elf_SymValue* sysconf = lookup("sysconf");
+    // ensure_symbol may trigger a symbol table vector resize, so only lookup
+    // the symbols after we're done touching the symbol table.
+    ensure_symbol("mprotect");
+    ensure_symbol("sysconf");
+    Elf_SymValue* mprotect = symtab->lookup("mprotect", STT(FUNC));
+    Elf_SymValue* sysconf = symtab->lookup("sysconf", STT(FUNC));
 
     // Add relocations for the mprotect and sysconf symbols.
     auto add_relocation_to = [&new_rels, &symtab, rel_type2](

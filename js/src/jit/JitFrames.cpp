@@ -656,11 +656,10 @@ static JitFrameLayout* GetLastProfilingFrame(ResumeFromException* rfe) {
   return nullptr;
 }
 
-void HandleExceptionWasm(JSContext* cx, wasm::WasmFrameIter* iter,
-                         ResumeFromException* rfe) {
+static void HandleExceptionWasm(JSContext* cx, wasm::WasmFrameIter* iter,
+                                ResumeFromException* rfe) {
   MOZ_ASSERT(cx->activation()->asJit()->hasWasmExitFP());
   wasm::HandleThrow(cx, *iter, rfe);
-  MOZ_ASSERT(iter->done());
 }
 
 void HandleException(ResumeFromException* rfe) {
@@ -707,15 +706,15 @@ void HandleException(ResumeFromException* rfe) {
     if (iter.isWasm()) {
       prevJitFrame = nullptr;
       HandleExceptionWasm(cx, &iter.asWasm(), rfe);
-      // If a wasm try-catch handler is found, we can immediately jump to it
-      // and quit iterating through the stack.
       if (rfe->kind == ExceptionResumeKind::WasmCatch) {
-        return;
+        // Jump to a Wasm try-catch handler.
+        MOZ_ASSERT(!iter.done());
+      } else {
+        // Return to the Wasm entry frame.
+        MOZ_ASSERT(rfe->kind == ExceptionResumeKind::Wasm);
+        MOZ_ASSERT(iter.done());
       }
-      if (!iter.done()) {
-        ++iter;
-      }
-      continue;
+      return;
     }
 
     JSJitFrameIter& frame = iter.asJSJit();

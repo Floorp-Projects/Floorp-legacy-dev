@@ -396,6 +396,7 @@ def run_remaining_transforms(config, tasks):
         ("raptor", lambda t: t["suite"] == "raptor"),
         ("other", None),
         ("worker", None),
+        ("pernosco", lambda t: t["build-platform"].startswith("linux64")),
         # These transforms should always run last as there is never any
         # difference in configuration from one chunk to another (other than
         # chunk number).
@@ -483,7 +484,7 @@ def make_job_description(config, tasks):
         if "expires-after" in task:
             jobdesc["expires-after"] = task["expires-after"]
 
-        jobdesc["routes"] = []
+        jobdesc["routes"] = task.get("routes", [])
         jobdesc["run-on-projects"] = sorted(task["run-on-projects"])
         jobdesc["scopes"] = []
         jobdesc["tags"] = task.get("tags", {})

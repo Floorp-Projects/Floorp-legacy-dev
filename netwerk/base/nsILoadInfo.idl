@@ -31,6 +31,7 @@ namespace mozilla {
 namespace dom {
 class ClientInfo;
 class ClientSource;
+struct FeaturePolicyInfo;
 class PerformanceStorage;
 class ServiceWorkerDescriptor;
 } // namespace dom
@@ -53,6 +54,8 @@ native OriginAttributes(mozilla::OriginAttributes);
 [ptr] native PerformanceStoragePtr(mozilla::dom::PerformanceStorage);
       native LoadTainting(mozilla::LoadTainting);
       native CSPRef(already_AddRefed<nsIContentSecurityPolicy>);
+      native MaybeFeaturePolicyInfo(mozilla::Maybe<mozilla::dom::FeaturePolicyInfo>);
+[ref] native const_FeaturePolicyInfoRef(const mozilla::dom::FeaturePolicyInfo);
 
 typedef unsigned long nsSecurityFlags;
 
@@ -1295,6 +1298,15 @@ interface nsILoadInfo : nsISupports
   [notxpcom,nostdcall] CSPRef GetCsp();
   [notxpcom,nostdcall] CSPRef GetPreloadCsp();
   [notxpcom,nostdcall] CSPRef GetCspToInherit();
+
+  /**
+    * The possibly cross-origin container feature policy required to
+    * initialize the feature policy of a document load.
+    */
+  [noscript, nostdcall, notxpcom]
+  MaybeFeaturePolicyInfo GetContainerFeaturePolicyInfo();
+  [noscript, nostdcall, notxpcom]
+  void SetContainerFeaturePolicyInfo(in const_FeaturePolicyInfoRef aContainerFeaturePolicy);
 
   /**
     * The service worker and fetch specifications require returning the

@@ -18,7 +18,7 @@ add_task(async function test_getSecurityInfo() {
       permissions: [
         "webRequest",
         "webRequestBlocking",
-        "<all_urls>"
+        "*://example.org/*"
       ],
     },
     async background() {
@@ -89,6 +89,62 @@ add_task(async function test_getSecurityInfo() {
 
   await extension.awaitFinish("success");
 
+  await extension.unload();
+});
+
+add_task(async function test_getSecurityInfo_without_permission() {
+  const extension = ExtensionTestUtils.loadExtension({
+    temporarilyInstalled: true, // Needed for granted_host_permissions
+    manifest: {
+      manifest_version: 3,
+      granted_host_permissions: true,
+      permissions: [ "webRequest", "webRequestBlocking"],
+      host_permissions: ["*://example.org/*"],
+    },
+    async background() {
+      let requestCount = 0;
+      browser.webRequest.onHeadersReceived.addListener(
+        async ({ requestId  }) => {
+          ++requestCount;
+          try {
+            let info = await browser.webRequest.getSecurityInfo(requestId, {});
+            browser.test.assertEq("secure", info?.state, "Got SecurityInfo");
+
+            await browser.permissions.remove({ origins: ["*://example.org/*"] });
+
+            browser.test.assertDeepEq(
+              undefined,
+              await browser.webRequest.getSecurityInfo(requestId, {}),
+              "getSecurityInfo() should not return info without permission"
+            );
+          } catch (e) {
+            browser.test.fail(`Unexpected error in onHeadersReceived: ${e}`);
+          }
+        },
+        { urls: ["*://example.org/*/file_image_good.png?permcheck*"] },
+        ["blocking"]
+      );
+
+      // Main purpose of this is to ensure that the webRequest listener has
+      // registered when the request is triggered (work around bug 1300234).
+      browser.webRequest.getSecurityInfo("").then(securityInfo => {
+        browser.test.assertEq(
+          undefined,
+          securityInfo,
+          "getSecurityInfo() with invalid requestId resolves to undefined"
+        );
+        const img = new Image();
+        img.src = "https://example.org/tests/toolkit/components/extensions/test/mochitest/file_image_good.png?permcheck&_=" + Date.now();
+        img.decode().then(() => {
+          browser.test.assertEq(1, requestCount, "Seen request");
+          browser.test.sendMessage("done");
+        });
+      });
+    },
+  });
+
+  await extension.startup();
+  await extension.awaitMessage("done");
   await extension.unload();
 });
 

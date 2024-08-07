@@ -8,6 +8,7 @@
 
 This script manages Desktop repacks for nightly builds.
 """
+
 import glob
 import os
 import shlex
@@ -61,17 +62,6 @@ class DesktopSingleLocale(LocalesMixin, AutomationMixin, VCSMixin, BaseScript):
         ],
         [
             [
-                "--tag-override",
-            ],
-            {
-                "action": "store",
-                "dest": "tag_override",
-                "type": "string",
-                "help": "Override the tags set for all repos",
-            },
-        ],
-        [
-            [
                 "--en-us-installer-url",
             ],
             {
@@ -98,6 +88,8 @@ class DesktopSingleLocale(LocalesMixin, AutomationMixin, VCSMixin, BaseScript):
                 "locales_dir": "browser/locales",
                 "log_name": "single_locale",
                 "hg_l10n_base": "https://hg.mozilla.org/l10n-central",
+                # If set, takes precedence over `hg_l10n_base`
+                "git_repository": "https://github.com/mozilla-l10n/firefox-l10n",
             },
         }
 
@@ -106,7 +98,7 @@ class DesktopSingleLocale(LocalesMixin, AutomationMixin, VCSMixin, BaseScript):
             self,
             config_options=self.config_options,
             require_config_file=require_config_file,
-            **buildscript_kwargs
+            **buildscript_kwargs,
         )
 
         self.bootstrap_env = None

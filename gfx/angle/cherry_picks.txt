@@ -1,18 +1,55 @@
-commit fa03ab3adeaf286dbbfbf63ecb4fad33978ca5db
+commit 419cd2c3213b594f8e2488bf48034fed20ace81d
+Author: Shahbaz Youssefi <syoussefi@chromium.org>
+Date:   Mon Mar 27 13:05:36 2023 -0400
+
+    Translator: Initialize out arguments too for WebGL
+    
+    Local variables were initialized for WebGL, but not `out` arguments.
+    However, `out` arguments completely overwrite the passed-in variable at
+    call site, so they should also be zeroed out.
+    
+    Bug: chromium:1425685
+    Change-Id: Ib2f61a962eea74c4933aafa4d5ad377189cec578
+    Reviewed-on: https://chromium-review.googlesource.com/c/angle/angle/+/4375137
+    Reviewed-by: Geoff Lang <geofflang@chromium.org>
+    Reviewed-by: Kenneth Russell <kbr@chromium.org>
+    Commit-Queue: Shahbaz Youssefi <syoussefi@chromium.org>
+
+commit 7918168436578718b234bfd56da152e34a85af1d
+Author: Kelsey Gilbert <kelsey.gilbert@mozilla.com>
+Date:   Tue Jun 4 15:37:29 2024 -0700
+
+    Add GLSL variable byte size limits to ShBuiltInResources.
+
+commit 31c0a5bff1330706aff3c4594c8166745814a45b
+Author: Shahbaz Youssefi <syoussefi@chromium.org>
+Date:   Wed May 3 13:41:36 2023 -0400
+
+    WebGL: Limit total size of private data
+
+    ... not just individual arrays.
+
+    Bug: chromium:1431761
+    Change-Id: I721e29aeceeaf12c3f6a67b668abffb8dfbc89b0
+    Reviewed-on: https://chromium-review.googlesource.com/c/angle/angle/+/4503753
+    Reviewed-by: Kenneth Russell <kbr@chromium.org>
+    Commit-Queue: Shahbaz Youssefi <syoussefi@chromium.org>
+
+commit ddaf44ac75d5d0390873c2af193e02159ecbe672
 Author: Geoff Lang <geofflang@chromium.org>
 Date:   Fri Dec 8 13:20:36 2023 -0500
 
     Validate Uniform variable limits with each iteration
-    
+
     VariablePacker would loop over all variables and sum up the total
     row counts before validating. Each variable can take hundreds of rows
     so it is possible to overflow the counters before validating them.
-    
+
     Validate the limits with each iteration and early-out when the limits
     are exceeded.
-    
+
     https://bugzilla.mozilla.org/show_bug.cgi?id=1864587
-    
+
     Bug: chromium:1864587
     Change-Id: Ic235ada1516a0d5a9948d82b22f6316a037c09ca
     Reviewed-on: https://chromium-review.googlesource.com/c/angle/angle/+/5106408
@@ -25,13 +62,13 @@ Author: Shahbaz Youssefi <syoussefi@chromium.org>
 Date:   Tue Mar 28 11:43:23 2023 -0400
 
     Translator: Limit the size of private variables in WebGL shaders
-    
+
     As a follow up to
     https://chromium-review.googlesource.com/c/angle/angle/+/3023033, the
     limit to shader-private variables (locals and globals) is further
     reduced to 1MB.  A variable that large will not fit in GPU registers and
     will spill to memory, killing performance.
-    
+
     Bug: chromium:1427865
     Change-Id: I77314d4b891c591cd9a83ad2aebb77d7256f3ada
     Reviewed-on: https://chromium-review.googlesource.com/c/angle/angle/+/4377639
@@ -42,7 +79,7 @@ Author: Kelsey Gilbert <kelsey.gilbert@mozilla.com>
 Date:   Wed Mar 29 16:13:39 2023 -0700
 
     Add ShCompileOptions.initGLPointSize.
-    
+
     Change-Id: I1d998867f3e829ed0dc8181fa76be5fe701dde70
 
 commit aa3a569c8ddc1122d55663749a6db63e48b3033c
@@ -56,11 +93,11 @@ Author: Kelsey Gilbert <jgilbert@mozilla.com>
 Date:   Thu Sep 8 17:10:21 2022 -0700
 
     Import <cmath> in SymbolTable_ESSL_autogen.cpp.
-    
+
     Fixes Snap builds of Firefox.
-    
+
     Change-Id: I8d71d230d5e4a5a042e6afd4e31342da9a085bed
-    
+
     Co-authored-by: Erich Gubler <erichdongubler@gmail.com>
 
 commit 0bf5781fddeb50d02b703dd89cc77b2c5f07e334
@@ -68,9 +105,9 @@ Author: Erich Gubler <erichdongubler@gmail.com>
 Date:   Thu Jan 19 00:20:06 2023 -0500
 
     build(linux): disable `PoolAlloc` to work around `asan` failures
-    
+
     We noticed this causing problems in [Firefox CI][failing-ci].
-    
+
     [failing-ci]: https://treeherder.mozilla.org/jobs?repo=autoland&author=egubler%40mozilla.com&selectedTaskRun=e6KdZgnNTCOE9weaOnTjVQ.0
 
 commit ea4d354f6cfc83c31446a855f3fd5603737eae76
@@ -90,7 +127,7 @@ Author: Jeff Gilbert <jdashg@gmail.com>
 Date:   Thu Feb 11 17:34:00 2021 -0800
 
     Don't assert for non-sampleable non-ms sources in blitRenderbufferRect if we can CopySubResource.
-    
+
     In Firefox, we can have a source from DirectComposition without
     D3D11_BIND_SHADER_RESOURCE. This is fine so long as our formats etc
     match enough to hit the CopySubResource path.
@@ -101,12 +138,12 @@ Author: Jeff Muizelaar <jrmuizel@gmail.com>
 Date:   Wed May 6 14:04:42 2020 -0400
 
     Don't use ClearView if we previously used dual source blending on Intel gen6. (#22)
-    
+
     Doing a ClearView after a dual source blend seems to cause a TDR on
     Intel SandyBridge. Presumeably this is because the ClearView is
     implemented as a regular draw and the driver doesn't properly set up the
     state.
-    
+
     If we detect that this is going to happen we fall back to the manual
     draw call path. This lets us use ClearView most of the time still.
 
@@ -121,11 +158,11 @@ Author: Dzmitry Malyshau <dmalyshau@mozilla.com>
 Date:   Thu Dec 5 13:02:14 2019 -0500
 
     Restrict the slow texture upload workaround to 128bit formats. (#21)
-    
+
     The workaround is slow for having a CPU-visible mirror of the texture, but that mirror is not properly recycled with regards to GPU usage, thus causing a CPU stall on update.
-    
+
     Original reports were related to WebRender vertex texture updates that are RGBA32F and RGBA32U formats. Limiting the workaround to these formats would allow the affected platforms to upload regular texture data faster without stalls.
-    
+
     Co-authored-by: Erich Gubler <erichdongubler@gmail.com>
 
 Above: cherries picked
@@ -137,9 +174,9 @@ Author: Shahbaz Youssefi <syoussefi@chromium.org>
 Date:   Mon Oct 31 10:29:45 2022 -0400
 
     M108: Vulkan: Disable logicOp dynamic state on Intel/Mesa
-    
+
     Hits a stack overflow inside the driver.
-    
+
     Bug: chromium:1379201
     Change-Id: I790d7ef0333ba17eedbe91e4fc9c3a2b94563bff
     Reviewed-on: https://chromium-review.googlesource.com/c/angle/angle/+/4004440

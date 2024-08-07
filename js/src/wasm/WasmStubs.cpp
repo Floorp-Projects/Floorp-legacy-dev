@@ -2826,6 +2826,24 @@ static void ClobberWasmRegsForLongJmp(MacroAssembler& masm, Register jumpReg) {
   }
 }
 
+// Generates code to jump to a Wasm catch handler after unwinding the stack.
+// The |rfe| register stores a pointer to the ResumeFromException struct
+// allocated on the stack.
+void wasm::GenerateJumpToCatchHandler(MacroAssembler& masm, Register rfe,
+                                      Register scratch1, Register scratch2) {
+  masm.loadPtr(Address(rfe, ResumeFromException::offsetOfInstance()),
+               InstanceReg);
+  masm.loadWasmPinnedRegsFromInstance();
+  masm.switchToWasmInstanceRealm(scratch1, scratch2);
+  masm.loadPtr(Address(rfe, ResumeFromException::offsetOfTarget()), scratch1);
+  masm.loadPtr(Address(rfe, ResumeFromException::offsetOfFramePointer()),
+               FramePointer);
+  masm.loadStackPtr(Address(rfe, ResumeFromException::offsetOfStackPointer()));
+  MoveSPForJitABI(masm);
+  ClobberWasmRegsForLongJmp(masm, scratch1);
+  masm.jump(scratch1);
+}
+
 // Generate a stub that restores the stack pointer to what it was on entry to
 // the wasm activation, sets the return register to 'false' and then executes a
 // return which will return from this wasm activation to the caller. This stub
@@ -2895,19 +2913,7 @@ static bool GenerateThrowStub(MacroAssembler& masm, Label* throwLabel,
 
   // The case where a Wasm catch handler was found while unwinding the stack.
   masm.bind(&resumeCatch);
-  masm.loadPtr(Address(ReturnReg, ResumeFromException::offsetOfInstance()),
-               InstanceReg);
-  masm.loadWasmPinnedRegsFromInstance();
-  masm.switchToWasmInstanceRealm(scratch1, scratch2);
-  masm.loadPtr(Address(ReturnReg, ResumeFromException::offsetOfTarget()),
-               scratch1);
-  masm.loadPtr(Address(ReturnReg, ResumeFromException::offsetOfFramePointer()),
-               FramePointer);
-  masm.loadStackPtr(
-      Address(ReturnReg, ResumeFromException::offsetOfStackPointer()));
-  MoveSPForJitABI(masm);
-  ClobberWasmRegsForLongJmp(masm, scratch1);
-  masm.jump(scratch1);
+  GenerateJumpToCatchHandler(masm, ReturnReg, scratch1, scratch2);
 
   // No catch handler was found, so we will just return out.
   masm.bind(&leaveWasm);

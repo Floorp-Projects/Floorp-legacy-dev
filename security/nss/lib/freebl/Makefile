@@ -568,7 +568,6 @@ ifneq ($(shell $(CC) -? 2>&1 >/dev/null </dev/null | sed -e 's/:.*//;1q'),lcc)
             HAVE_INT128_SUPPORT = 1
             DEFINES += -DHAVE_INT128_SUPPORT
     else ifeq (1,$(CC_IS_GCC))
-        SUPPORTS_VALE_CURVE25519 = 1
         ifneq (,$(filter 4.6 4.7 4.8 4.9,$(word 1,$(GCC_VERSION)).$(word 2,$(GCC_VERSION))))
             HAVE_INT128_SUPPORT = 1
             DEFINES += -DHAVE_INT128_SUPPORT
@@ -591,11 +590,6 @@ endif # USE_64
 
 ifndef HAVE_INT128_SUPPORT
     DEFINES += -DKRML_VERIFIED_UINT128
-endif
-
-ifdef SUPPORTS_VALE_CURVE25519
-    VERIFIED_SRCS += Hacl_Curve25519_64.c
-    DEFINES += -DHACL_CAN_COMPILE_INLINE_ASM
 endif
 
 ifndef NSS_DISABLE_CHACHAPOLY

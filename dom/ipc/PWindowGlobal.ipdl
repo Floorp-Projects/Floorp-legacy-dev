@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 include "mozilla/dom/DocShellMessageUtils.h";
-include "mozilla/dom/FeaturePolicyUtils.h";
 include "mozilla/dom/IdentityCredentialSerializationHelpers.h";
 include "mozilla/dom/PermissionMessageUtils.h";
 include "mozilla/dom/SessionStoreMessageUtils.h";
@@ -34,7 +33,6 @@ using mozilla::layers::LayersId from "mozilla/layers/LayersTypes.h";
 [RefCounted] using class nsITransportSecurityInfo from "nsITransportSecurityInfo.h";
 using mozilla::UseCounters from "mozilla/UseCounter.h";
 using mozilla::dom::MaybeDiscardedWindowContext from "mozilla/dom/WindowContext.h";
-[RefCounted] using mozilla::dom::FeaturePolicy from "mozilla/dom/FeaturePolicy.h";
 [RefCounted] using mozilla::dom::SessionStoreRestoreData from "mozilla/dom/SessionStoreRestoreData.h";
 using mozilla::dom::IdentityCredentialRequestOptions from "mozilla/dom/IdentityCredentialBinding.h";
 
@@ -87,8 +85,6 @@ child:
    * Request from UI to reset the scaling zoom that is controlled by APZ.
    */
   async ResetScalingZoom();
-
-  async SetContainerFeaturePolicy(nullable FeaturePolicy aContainerFeaturePolicy);
 
   async RestoreDocShellState(DocShellRestoreState aState)
     returns (bool success);

@@ -7,7 +7,6 @@
 #ifndef mozilla_dom_FeaturePolicyUtils_h
 #define mozilla_dom_FeaturePolicyUtils_h
 
-#include "nsString.h"
 #include <functional>
 
 #include "mozilla/dom/FeaturePolicy.h"
@@ -79,12 +78,13 @@ template <typename T>
 struct IPDLParamTraits;
 
 template <>
-struct IPDLParamTraits<mozilla::dom::FeaturePolicy*> {
+struct IPDLParamTraits<dom::FeaturePolicyInfo> {
   static void Write(IPC::MessageWriter* aWriter, IProtocol* aActor,
-                    mozilla::dom::FeaturePolicy* aParam);
+                    const mozilla::dom::FeaturePolicyInfo& aParam);
   static bool Read(IPC::MessageReader* aReader, IProtocol* aActor,
-                   RefPtr<mozilla::dom::FeaturePolicy>* aResult);
+                   dom::FeaturePolicyInfo* aResult);
 };
+
 }  // namespace ipc
 }  // namespace mozilla
 

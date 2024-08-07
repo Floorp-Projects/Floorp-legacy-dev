@@ -96,8 +96,8 @@ job-template:
                             # level 3 repositories, some build types are expected to
                             # be signed with our fake certificate.
                             by-build-platform:
-                                .*-shippable: "CN=Mozilla Corporation, OU=Firefox Engineering Operations, O=Mozilla Corporation, L=Mountain View, S=California, C=US"
-                                .*-devedition: "CN=Mozilla Corporation, OU=Firefox Engineering Operations, O=Mozilla Corporation, L=Mountain View, S=California, C=US"
+                                .*-shippable: "CN=Mozilla Corporation, OU=Firefox Engineering Operations, O=Mozilla Corporation, L=San Francisco, S=California, C=US"
+                                .*-devedition: "CN=Mozilla Corporation, OU=Firefox Engineering Operations, O=Mozilla Corporation, L=San Francisco, S=California, C=US"
                                 default: "CN=Mozilla Fake SPC"
         publisher-display-name:
             by-package-format:

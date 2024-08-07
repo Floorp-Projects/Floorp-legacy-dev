@@ -1905,7 +1905,7 @@ void LocalAccessible::ActionNameAt(uint8_t aIndex, nsAString& aName) {
   }
 
   if (ActionAncestor()) {
-    aName.AssignLiteral("click ancestor");
+    aName.AssignLiteral("clickAncestor");
     return;
   }
 }
