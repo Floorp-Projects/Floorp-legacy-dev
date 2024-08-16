@@ -2702,7 +2702,7 @@ main.has-snippet {
 
 .ds-header,
 .ds-layout .section-title span {
-  color: var(--newtab-text-primary-color);
+  color: rgb(255, 255, 255);
   font-size: 17px;
   font-weight: 600;
   line-height: 20px;
@@ -2716,7 +2716,7 @@ main.has-snippet {
   margin: auto;
 }
 .collapsible-section.ds-layout .section-top-bar .learn-more-link a {
-  color: var(--newtab-primary-action-background);
+  color: #ffffff8e;
   font-weight: 500;
 }
 .collapsible-section.ds-layout .section-top-bar .learn-more-link a:is(:focus, :hover) {
@@ -2725,21 +2725,19 @@ main.has-snippet {
 
 .ds-onboarding-container,
 .ds-card-grid .ds-card {
-  background: #FFF;
+  background-color: color-mix(in srgb, var(--newtab-background-color) 50%, transparent);
+  border: 1px solid rgba(170, 170, 170, 0.6);
   border-radius: 4px;
 }
-[lwt-newtab-brighttext] .ds-onboarding-container,
-[lwt-newtab-brighttext] .ds-card-grid .ds-card {
-  background: none;
+.ds-card-grid .ds-card:is(.active, :focus, :hover) {
+  background: var(--newtab-element-hover-color);
+}
+.floorp-backdrop-blur-enable .ds-card-grid .ds-card {
+  backdrop-filter: blur(12px);
 }
 .ds-onboarding-container:not(.placeholder),
 .ds-card-grid .ds-card:not(.placeholder) {
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-[lwt-newtab-brighttext] .ds-onboarding-container:not(.placeholder),
-[lwt-newtab-brighttext] .ds-card-grid .ds-card:not(.placeholder) {
-  background: var(--newtab-background-color-secondary);
 }
 .ds-onboarding-container:not(.placeholder) .img-wrapper .img img,
 .ds-onboarding-container:not(.placeholder) .img-wrapper .img .placeholder-image,
@@ -3588,20 +3586,10 @@ main.has-snippet {
   flex-direction: column;
   text-decoration: none;
 }
-.ds-card .ds-card-link:hover header {
-  color: var(--newtab-primary-action-background);
-}
 .ds-card .ds-card-link:focus {
   border: 0;
   outline: 0;
-  box-shadow: 0 0 0 3px var(--newtab-primary-action-background-dimmed), 0 0 0 1px var(--newtab-primary-action-background);
   transition: none;
-}
-.ds-card .ds-card-link:focus header {
-  color: var(--newtab-primary-action-background);
-}
-.ds-card .ds-card-link:active header {
-  color: var(--newtab-primary-element-active-color);
 }
 .ds-card .meta {
   display: flex;
