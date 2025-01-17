@@ -222,8 +222,8 @@ jobs:
       inside_version: ${{needs.get-inside-version.outputs.inside-version}}
       MOZ_BUILD_DATE: ${{needs.get-buildid.outputs.buildids}}
     secrets:
-      macOS_CERTIFICATES_P12_For_App_BASE64: ${{ secrets.macOS_CERTIFICATES_P12_For_App_BASE64 }}
-      macOS_CERTIFICATES_P12_PASSWORD: ${{ secrets.macOS_CERTIFICATES_P12_PASSWORD }}
+      macOS_CERTIFICATES_P12_For_App_BASE64: ${{ secrets.APPLE_DEVELOPER_P12_BASE64 }}
+      macOS_CERTIFICATES_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPER_P12_PASSWORD }}
       macOS_AppleDeveloperId: ${{ secrets.macOS_AppleDeveloperId }}
       macOS_AppleAccountId: ${{ secrets.macOS_AppleAccountId }}
       macOS_AppleTeamId: ${{ secrets.macOS_AppleTeamId }}
